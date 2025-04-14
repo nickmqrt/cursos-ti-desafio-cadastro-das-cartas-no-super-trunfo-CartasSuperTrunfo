@@ -1,53 +1,80 @@
 #include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    char estado[3];
+    char codigo[10];
+    char nome[50];
+    float populacao; // em milhões
+    float area;      // em km²
+    float pib;       // em bilhões
+    int pturisticos;
+    float densidade;
+    float super_poder;
+} Carta;
+
+void cadastrarCarta(Carta *carta) {
+    printf("Digite o código do estado: ");
+    scanf("%s", carta->estado);
+
+    printf("Digite o código da cidade: ");
+    scanf("%s", carta->codigo);
+
+    printf("Digite o nome da cidade: ");
+    scanf(" %[^\n]", carta->nome); // permite espaços
+
+    printf("Digite a População da cidade (em milhões): ");
+    scanf("%f", &carta->populacao);
+
+    printf("Digite a área da cidade (em km²): ");
+    scanf("%f", &carta->area);
+
+    printf("Digite o PIB da cidade (em bilhões): ");
+    scanf("%f", &carta->pib);
+
+    printf("Digite o número de pontos turísticos: ");
+    scanf("%d", &carta->pturisticos);
+
+    // Cálculo da densidade e do super poder
+    carta->densidade = (carta->populacao * 1000000) / carta->area;
+    carta->super_poder = carta->populacao + carta->area + carta->pib + carta->pturisticos;
+}
+
+void exibirCarta(Carta carta) {
+    printf("\n--- Carta: %s (%s) ---\n", carta.nome, carta.codigo);
+    printf("Estado: %s\n", carta.estado);
+    printf("População: %.2f milhões\n", carta.populacao);
+    printf("Área: %.2f km²\n", carta.area);
+    printf("PIB: %.2f bilhões\n", carta.pib);
+    printf("Pontos turísticos: %d\n", carta.pturisticos);
+    printf("Densidade Populacional: %.2f hab/km²\n", carta.densidade);
+    printf("Super Poder: %.2f\n", carta.super_poder);
+}
+
+void compararCartas(Carta c1, Carta c2) {
+    printf("\n===== COMPARAÇÃO =====\n");
+
+    printf("\nPopulação: %s vence\n", c1.populacao > c2.populacao ? c1.nome : c2.nome);
+    printf("Área: %s vence\n", c1.area > c2.area ? c1.nome : c2.nome);
+    printf("PIB: %s vence\n", c1.pib > c2.pib ? c1.nome : c2.nome);
+    printf("Pontos turísticos: %s vence\n", c1.pturisticos > c2.pturisticos ? c1.nome : c2.nome);
+    printf("Densidade Populacional: %s vence\n", c1.densidade < c2.densidade ? c1.nome : c2.nome); // menor vence
+    printf("Super Poder: %s vence\n", c1.super_poder > c2.super_poder ? c1.nome : c2.nome);
+}
 
 int main() {
+    Carta carta1, carta2;
 
-    //Comecei pelas variáveis:
+    printf("=== Cadastro da Carta 1 ===\n");
+    cadastrarCarta(&carta1);
 
-    char estado = "A"; //Usei o char (que indica apenas um caractere) para indicar o estado.
-    char codigoc[10] = "A01"; //Usei o char "nome"[] (que indica uma cadeia de caracteres) para indicar o código da cidade.
-    char nomecidade[50] = "Brasília"; //Usei novamente o char "nome"[] (que indica uma cadeia de caracteres) para indicar o nome da cidade.
-    float populacao = 2.817; //Usei o float (que indica um número flutuante) para indicar a população, pois quando eu coloquei int (para número inteiro) eu não estava conseguindo interagir no scanf da área. População está em milhões.
-    float area = 5779.14; //Usei o float (que indica um número flutuante) novamente para indicar a área da cidade em Km2.
-    float pib = 328.8; //Usei mais uma vez o float (que indica um número flutuante) para indicar o PIB da cidade em bilhões de reais.
-    int pturisticos = 32; //Usei o int (que indica números inteiros) para indicar o número de pontos turísticos.
+    printf("\n=== Cadastro da Carta 2 ===\n");
+    cadastrarCarta(&carta2);
 
-    //Variáveis prontas, agora começo a interagir com o usuário usando a combinação estudada "printf" e "scanf":
+    exibirCarta(carta1);
+    exibirCarta(carta2);
 
-    printf("Digite o código do estado: \n"); //Com esse printf, irá aparecer no terminal o texto escrito.
-    scanf("%c", &estado); //Esse scanf permitirá que o usuário interaja com o programa através do terminal.
-
-    printf("Digite o código da cidade: \n"); //Com esse printf, irá aparecer no terminal o texto escrito.
-    scanf("%s", &codigoc); //Esse scanf permitirá que o usuário interaja com o programa através do terminal.
-
-    printf("Digite o nome da cidade: \n");  //Com esse printf, irá aparecer no terminal o texto escrito.
-    scanf("%s", &nomecidade); //Esse scanf permitirá que o usuário interaja com o programa através do terminal.
-
-    printf("Digite a População da cidade: \n"); //Com esse printf, irá aparecer no terminal o texto escrito.
-    scanf("%f", &populacao); //Esse scanf permitirá que o usuário interaja com o programa através do terminal.
-
-    printf("Digite a área da cidade: \n"); //Com esse printf, irá aparecer no terminal o texto escrito.
-    scanf("  %f", &area); //Esse scanf permitirá que o usuário interaja com o programa através do terminal.
-
-    printf("Digite o PIB da cidade: \n"); //Com esse printf, irá aparecer no terminal o texto escrito.
-    scanf("%f", &pib); //Esse scanf permitirá que o usuário interaja com o programa através do terminal.
-
-    printf("Digite o número de pontos turísticos: \n");  //Com esse printf, irá aparecer no terminal o texto escrito.
-    scanf("%d", &pturisticos); //Esse scanf permitirá que o usuário interaja com o programa através do terminal.
-
-    //Depois que o usuário respondeu através do terminal, eu uso novamente a função printf para imprimir os dados digitados pelo usuário:
-
-    printf("\nEstado: %c \n", estado);
-    printf("Código da cidade: %s \n", codigoc);
-    printf("Nome da cidade: %s \n", nomecidade);
-    printf("População da cidade: %.2f \n", populacao);
-    printf("Área da cidade: %.2f \n", area);
-    printf("Pib da cidade: %.2f \n", pib);
-    printf("Número de pontos turísticos: %d \n \n", pturisticos);
-
-    //E assim termina o cadastro das cartas, espero ter dado tudo que foi pedido nesse desafio!
+    compararCartas(carta1, carta2);
 
     return 0;
-
-
 }
